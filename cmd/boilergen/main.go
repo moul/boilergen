@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"os"
 
@@ -17,6 +16,19 @@ func main() {
 	app.Version = boilergen.VERSION
 	app.Usage = app.Name
 
+	app.Flags = []cli.Flag{
+		cli.StringFlag{
+			Name:  "t,templates-directory",
+			Usage: "templates directory",
+			Value: "./templates",
+		},
+		cli.StringFlag{
+			Name:  "o,output-directory",
+			Usage: "output directory",
+			Value: "./generated",
+		},
+	}
+
 	app.Action = generate
 
 	if err := app.Run(os.Args); err != nil {
@@ -25,6 +37,19 @@ func main() {
 }
 
 func generate(c *cli.Context) error {
-	fmt.Println("Hello world")
+	directory := "."
+	if len(c.Args()) > 0 {
+		directory = c.Args()[0]
+	}
+
+	boiler := boilergen.New()
+	boiler.SetOutputDirectory(c.String("output-directory"))
+	boiler.SetTemplatesDirectory(c.String("templates-directory"))
+	if err := boiler.ParsePackageDir(directory); err != nil {
+		log.Fatalf("Parse error: %v", err)
+	}
+	if err := boiler.Generate(); err != nil {
+		log.Fatalf("Generate error: %v", err)
+	}
 	return nil
 }
