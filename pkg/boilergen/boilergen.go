@@ -1,8 +1,11 @@
 package boilergen
 
 import (
+	"fmt"
 	"html/template"
 	"os"
+	"path"
+	"path/filepath"
 
 	"github.com/kr/fs"
 	"github.com/moul/boilergen/pkg/asttree"
@@ -40,19 +43,41 @@ func (b *Boilergen) Generate() error {
 		return err
 	}
 
+	stat, err := os.Stat(b.outputDir)
+	if os.IsNotExist(err) {
+		os.MkdirAll(b.outputDir, 0755)
+	} else if !stat.IsDir() {
+		return fmt.Errorf("%s: not a directory", b.outputDir)
+	}
+
 	walker := fs.Walk(b.templatesDir)
 	for walker.Step() {
 		if err := walker.Err(); err != nil {
 			return err
 		}
+
 		if walker.Stat().IsDir() {
 			continue
 		}
+
 		tmpl, err := template.ParseFiles(walker.Path())
 		if err != nil {
 			return err
 		}
-		if err := tmpl.Execute(os.Stdout, tree); err != nil {
+
+		rel, err := filepath.Rel(b.templatesDir, walker.Path())
+		if err != nil {
+			return err
+		}
+
+		nameWithoutExtension := rel[0 : len(rel)-len(".tmpl")]
+		destFile, err := os.Create(path.Join(b.outputDir, nameWithoutExtension))
+		if err != nil {
+			return err
+		}
+		defer destFile.Close()
+
+		if err := tmpl.Execute(destFile, tree); err != nil {
 			return err
 		}
 	}
