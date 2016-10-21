@@ -1,8 +1,10 @@
 package boilergen
 
 import (
-	"fmt"
+	"html/template"
+	"os"
 
+	"github.com/kr/fs"
 	"github.com/moul/boilergen/pkg/asttree"
 	boilerparser "github.com/moul/boilergen/pkg/parser"
 )
@@ -37,6 +39,22 @@ func (b *Boilergen) Generate() error {
 	if err != nil {
 		return err
 	}
-	fmt.Println(tree)
+
+	walker := fs.Walk(b.templatesDir)
+	for walker.Step() {
+		if err := walker.Err(); err != nil {
+			return err
+		}
+		if walker.Stat().IsDir() {
+			continue
+		}
+		tmpl, err := template.ParseFiles(walker.Path())
+		if err != nil {
+			return err
+		}
+		if err := tmpl.Execute(os.Stdout, tree); err != nil {
+			return err
+		}
+	}
 	return nil
 }
