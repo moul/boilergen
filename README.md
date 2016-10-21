@@ -1,2 +1,2 @@
 # boilergen
-:gift: Reduce boilerplate with customisable go generate
+:gift: Reduce boilerplate with customisable `go:generate` templates
