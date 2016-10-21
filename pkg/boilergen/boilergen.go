@@ -2,13 +2,14 @@ package boilergen
 
 import (
 	"fmt"
-	"html/template"
 	"os"
 	"path"
 	"path/filepath"
+	"text/template"
 
 	"github.com/kr/fs"
 	"github.com/moul/boilergen/pkg/asttree"
+	"github.com/moul/boilergen/pkg/funcmap"
 	boilerparser "github.com/moul/boilergen/pkg/parser"
 )
 
@@ -60,7 +61,11 @@ func (b *Boilergen) Generate() error {
 			continue
 		}
 
-		tmpl, err := template.ParseFiles(walker.Path())
+		basename := path.Base(walker.Path())
+		tmpl, err := template.
+			New(basename).
+			Funcs(funcmap.FuncMap).
+			ParseFiles(walker.Path())
 		if err != nil {
 			return err
 		}
