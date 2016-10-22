@@ -4,7 +4,12 @@ SOURCES :=	$(shell find . -name "*.go")
 build: boilergen
 
 boilergen: $(SOURCES)
-	go build -o $@ ./cmd/boilergen/main.go
+	go build -o $@ ./cmd/boilergen
 
+.PHONY: clean
 clean:
 	rm -f boilergen
+
+.PHONY: install
+install:
+	go install -v ./cmd/boilergen
