@@ -1,4 +1,4 @@
 package simple
 
-//go:generate boiler --templates=./templates --output=./generated
+//go:generate boilergen -t ./templates -o ./generated
 type Simple struct{}
