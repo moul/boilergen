@@ -1,0 +1,8 @@
+hash: d00a11d7ace8a882aedf23db0fbaf62aea897cc3226b77705033d495cc3b0a89
+updated: 2016-10-22T10:04:54.666438071+02:00
+imports:
+- name: github.com/kr/fs
+  version: 2788f0dbd16903de03cb8186e5c7d97b69ad387b
+- name: github.com/urfave/cli
+  version: a14d7d367bc02b1f57d88de97926727f2d936387
+testImports: []
