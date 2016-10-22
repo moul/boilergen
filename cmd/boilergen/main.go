@@ -20,12 +20,12 @@ func main() {
 		cli.StringFlag{
 			Name:  "t,templates-directory",
 			Usage: "templates directory",
-			Value: "./templates",
+			Value: ".",
 		},
 		cli.StringFlag{
 			Name:  "o,output-directory",
 			Usage: "output directory",
-			Value: "./generated",
+			Value: ".",
 		},
 	}
 

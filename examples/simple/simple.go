@@ -1,4 +1,4 @@
 package simple
 
-//go:generate boilergen -t ./templates -o ./generated
+//go:generate boilergen
 type Simple struct{}
