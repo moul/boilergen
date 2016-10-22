@@ -1,4 +1,6 @@
 SOURCES :=	$(shell find . -name "*.go")
+GIT_BRANCH ?=	$(shell git rev-parse --abbrev-ref HEAD)
+DOCKER_IMAGE ?=	moul/boilergen:$(GIT_BRANCH)
 
 .PHONY: build
 build: boilergen
@@ -13,3 +15,7 @@ clean:
 .PHONY: install
 install:
 	go install -v ./cmd/boilergen
+
+.PHONY: docker.build
+docker.build:
+	docker build -t $(DOCKER_IMAGE) .
