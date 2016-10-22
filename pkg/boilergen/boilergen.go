@@ -61,6 +61,10 @@ func (b *Boilergen) Generate() error {
 			continue
 		}
 
+		if filepath.Ext(walker.Path()) != ".tmpl" {
+			continue
+		}
+
 		basename := path.Base(walker.Path())
 		tmpl, err := template.
 			New(basename).
