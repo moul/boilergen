@@ -9,11 +9,13 @@ import (
 type Tree struct {
 	Common
 	Imports []Import
-	Method  []Method
+	Methods []Method
+	Types   []Type
 }
 
 type Common struct {
-	BasePackage struct {
+	BuildCommand string
+	BasePackage  struct {
 		Dir      string `json:"Dir"`
 		Name     string `json:"Name"`
 		Defs     []types.Object
@@ -21,9 +23,30 @@ type Common struct {
 		TypesPkg *types.Package
 	} `json:"BasePackage"`
 }
-type Param struct{}
-type Import struct{}
-type Method struct{}
+
+type Type struct {
+	Common
+	Name              string
+	PrivateProperties []Property
+	PublicProperties  []Property
+	PrivateMethods    []Method
+	PublicMethods     []Method
+}
+
+type Property struct {
+	Common
+	Name string
+}
+
+type Import struct {
+	Common
+	Name string
+}
+
+type Method struct {
+	Common
+	Name string
+}
 
 func FromParserPackage(input *parser.Package) (Tree, error) {
 	tree := Tree{}

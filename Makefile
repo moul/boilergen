@@ -11,6 +11,7 @@ boilergen: $(SOURCES)
 .PHONY: examples
 examples: install
 	cd examples/simple; go generate
+	cd examples/propertizer; go generate
 
 .PHONY: clean
 clean:
