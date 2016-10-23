@@ -1,12 +1,17 @@
 SOURCES :=	$(shell find . -name "*.go")
 GIT_BRANCH ?=	$(shell git rev-parse --abbrev-ref HEAD)
 DOCKER_IMAGE ?=	moul/boilergen:$(GIT_BRANCH)
+PATH :=		$(PATH):.
 
 .PHONY: build
 build: boilergen
 
 boilergen: $(SOURCES)
 	go build -o $@ ./cmd/boilergen
+
+.PHONY: examples
+examples: boilergen
+	cd examples/simple; go generate
 
 .PHONY: clean
 clean:
