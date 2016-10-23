@@ -1,3 +1,22 @@
 HELLO WORLD:
-.:         {{  simple } [] []}
-. | json:  {"BasePackage":"","BasePackageImport":"","BasePackageName":"simple","InterfaceName":"","Imports":null,"Method":null}
+
+.:               {{{. simple [<nil> type ..Simple struct{}] [0xc420010b40] package simple (".")}} [] []}
+
+. | json:        {"BasePackage":{"Dir":".","Name":"simple","Defs":[null,{}],"Files":[{}],"TypesPkg":{}},"Imports":null,"Method":null}
+
+. | prettyjson:  {
+  "BasePackage": {
+    "Dir": ".",
+    "Name": "simple",
+    "Defs": [
+      null,
+      {}
+    ],
+    "Files": [
+      {}
+    ],
+    "TypesPkg": {}
+  },
+  "Imports": null,
+  "Method": null
+}
