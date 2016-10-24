@@ -1,7 +1,10 @@
 package asttree
 
 import (
+	"go/ast"
 	"go/types"
+	"log"
+	"os"
 
 	"github.com/moul/boilergen/pkg/parser"
 )
@@ -77,7 +80,10 @@ func FromParserPackage(input *parser.Package) (Tree, error) {
 	tree.Types = make([]Type, 0)
 	tree.Defs = make([]Def, 0)
 
-	// ast.Print(input.FS, input.Files[0].File)
+	for _, file := range input.Files {
+		log.Printf("ast.Print(%q)", file.Name)
+		ast.Fprint(os.Stderr, input.FS, file.File, ast.NotNilFilter)
+	}
 
 	for def := range input.Info.Defs {
 		obj := Def{

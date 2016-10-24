@@ -62,6 +62,7 @@ func ParsePackage(directory string, names []string, text interface{}) (*Package,
 		}
 		astFiles = append(astFiles, parsedFile)
 		files = append(files, &File{
+			Name: name,
 			File: parsedFile,
 			Pkg:  pkg,
 		})
