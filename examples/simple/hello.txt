@@ -1,6 +1,6 @@
 HELLO WORLD:
 
-.:               {{ {. simple [<nil> type ..Simple struct{}] [0xc420010b40] package simple (".")}} [] [] [] [{simple  <nil> <nil> <nil>} {Simple Simple <nil> <nil> <nil>}]}
+.:               {{ {. simple [<nil> type ..Simple struct{}] [0xc42000f0e0] package simple (".")}} [] [] [] []}
 
 . | json:        
 

@@ -62,6 +62,11 @@ type Method struct {
 	Name string
 }
 
+func (t *Tree) populate(node ast.Node) bool {
+	log.Print(node)
+	return true
+}
+
 func FromParserPackage(input *parser.Package) (Tree, error) {
 	// common
 	common := Common{}
@@ -81,29 +86,12 @@ func FromParserPackage(input *parser.Package) (Tree, error) {
 	tree.Defs = make([]Def, 0)
 
 	for _, file := range input.Files {
+		// debug
 		log.Printf("ast.Print(%q)", file.Name)
 		ast.Fprint(os.Stderr, input.FS, file.File, ast.NotNilFilter)
-	}
 
-	for def := range input.Info.Defs {
-		obj := Def{
-			Name: def.Name,
-		}
-		if def.Obj != nil {
-			obj.ObjectName = def.Obj.Name
-			// log.Printf("decl: %v", def.Obj.Decl)
-			// obj.Decl = def.Obj.Decl
-			obj.Data = def.Obj.Data
-			obj.Type = def.Obj.Type
-		}
-		tree.Defs = append(tree.Defs, obj)
-	}
-	for _, typ := range input.Info.Types {
-		tree.Types = append(tree.Types, Type{
-			Name:       typ.Type.String(),
-			Value:      typ.Value.String(),
-			ValueExact: typ.Value.ExactString(),
-		})
+		// populate
+		ast.Inspect(file.File, tree.populate)
 	}
 
 	return tree, nil
