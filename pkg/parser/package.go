@@ -9,31 +9,26 @@ import (
 )
 
 type Package struct {
-	dir      string
-	name     string
-	defs     map[*ast.Ident]types.Object
-	files    []*File
-	typesPkg *types.Package
+	Dir      string
+	Name     string
+	Defs     map[*ast.Ident]types.Object
+	Files    []*File
+	TypesPkg *types.Package
+	Info     *types.Info
+	FS       *token.FileSet
 }
 
 // check type-checks the package. The package must be OK to proceed.
 func (p *Package) check(fs *token.FileSet, astFiles []*ast.File) error {
-	p.defs = make(map[*ast.Ident]types.Object)
+	p.Defs = make(map[*ast.Ident]types.Object)
 	config := types.Config{Importer: importer.Default(), FakeImportC: true}
-	info := &types.Info{
-		Defs: p.defs,
+	p.Info = &types.Info{
+		Defs: p.Defs,
 	}
-	typesPkg, err := config.Check(p.dir, fs, astFiles, info)
+	typesPkg, err := config.Check(p.Dir, fs, astFiles, p.Info)
 	if err != nil {
 		return fmt.Errorf("checking package: %s", err)
 	}
-	p.typesPkg = typesPkg
+	p.TypesPkg = typesPkg
 	return nil
 }
-
-// getters
-func (p *Package) GetDir() string                       { return p.dir }
-func (p *Package) GetName() string                      { return p.name }
-func (p *Package) GetDefs() map[*ast.Ident]types.Object { return p.defs }
-func (p *Package) GetFiles() []*File                    { return p.files }
-func (p *Package) GetTypesPkg() *types.Package          { return p.typesPkg }

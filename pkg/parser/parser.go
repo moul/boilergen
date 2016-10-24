@@ -62,16 +62,19 @@ func ParsePackage(directory string, names []string, text interface{}) (*Package,
 		}
 		astFiles = append(astFiles, parsedFile)
 		files = append(files, &File{
-			file: parsedFile,
-			pkg:  pkg,
+			File: parsedFile,
+			Pkg:  pkg,
 		})
 	}
 	if len(astFiles) == 0 {
 		return nil, fmt.Errorf("%s: no buildable Go files", directory)
 	}
-	pkg.name = astFiles[0].Name.Name
-	pkg.files = files
-	pkg.dir = directory
+	pkg.Name = astFiles[0].Name.Name
+	pkg.Files = files
+	pkg.Dir = directory
+	pkg.FS = fs
 	// Type check the package.
-	return pkg, pkg.check(fs, astFiles)
+
+	err := pkg.check(fs, astFiles)
+	return pkg, err
 }

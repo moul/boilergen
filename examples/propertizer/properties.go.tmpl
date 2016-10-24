@@ -9,5 +9,7 @@ func (this *{{.Model}}) {{.Name | title}}() {{.Type}} {
 {{end}}
 
 {{range .Types}}
+// Getters for {{.Name}}
+
 {{range .PrivateProperties}}{{template "getter" .}}{{end}}
 {{end}}

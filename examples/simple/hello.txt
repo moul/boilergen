@@ -1,24 +1,7 @@
 HELLO WORLD:
 
-.:               {{ {. simple [<nil> type ..Simple struct{}] [0xc420010b80] package simple (".")}} [] [] []}
+.:               {{ {. simple [<nil> type ..Simple struct{}] [0xc420010b40] package simple (".")}} [] [] [] [{simple  <nil> <nil> <nil>} {Simple Simple <nil> <nil> <nil>}]}
 
-. | json:        {"BuildCommand":"","BasePackage":{"Dir":".","Name":"simple","Defs":[null,{}],"Files":[{}],"TypesPkg":{}},"Imports":null,"Methods":null,"Types":null}
+. | json:        
 
-. | prettyjson:  {
-  "BuildCommand": "",
-  "BasePackage": {
-    "Dir": ".",
-    "Name": "simple",
-    "Defs": [
-      null,
-      {}
-    ],
-    "Files": [
-      {}
-    ],
-    "TypesPkg": {}
-  },
-  "Imports": null,
-  "Methods": null,
-  "Types": null
-}
+. | prettyjson:  
