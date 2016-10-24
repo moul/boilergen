@@ -63,7 +63,15 @@ type Method struct {
 }
 
 func (t *Tree) populate(node ast.Node) bool {
-	log.Print(node)
+	switch t := node.(type) {
+	case *ast.FuncDecl, *ast.Ident, *ast.File, *ast.Field, *ast.MapType, *ast.ImportSpec, *ast.TypeSpec, *ast.GenDecl, *ast.ValueSpec, *ast.FieldList, *ast.StructType, *ast.ArrayType:
+		log.Printf("%#v", node)
+		return true
+	case *ast.CommentGroup, *ast.Comment, nil:
+		return false
+	default:
+		log.Printf("Unknown node type: %#v", t)
+	}
 	return true
 }
 
