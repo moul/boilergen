@@ -5,66 +5,54 @@ import (
 	"go/types"
 	"log"
 	"os"
+	"unicode"
 
 	"github.com/moul/boilergen/pkg/parser"
 )
 
-type Tree struct {
-	Common
-	Imports []Import
-	Methods []Method
-	Types   []Type
-	Defs    []Def
-}
-
-type Common struct {
-	BuildCommand string
-	BasePackage  struct {
-		Dir      string `json:"Dir"`
-		Name     string `json:"Name"`
-		Defs     []types.Object
-		Files    []*parser.File
-		TypesPkg *types.Package
-	} `json:"BasePackage"`
-}
-
-type Def struct {
-	Name       string
-	ObjectName string
-	Decl       interface{}
-	Data       interface{}
-	Type       interface{}
-}
-
-type Type struct {
-	Common
-	Name              string
-	Value             string
-	ValueExact        string
-	PrivateProperties []Property
-	PublicProperties  []Property
-	PrivateMethods    []Method
-	PublicMethods     []Method
-}
-
-type Property struct {
-	Common
-	Name string
-}
-
-type Import struct {
-	Common
-	Name string
-}
-
-type Method struct {
-	Common
-	Name string
-}
-
-func (t *Tree) populate(node ast.Node) bool {
+func (tree *Tree) populate(node ast.Node) bool {
 	switch t := node.(type) {
-	case *ast.FuncDecl, *ast.Ident, *ast.File, *ast.Field, *ast.MapType, *ast.ImportSpec, *ast.TypeSpec, *ast.GenDecl, *ast.ValueSpec, *ast.FieldList, *ast.StructType, *ast.ArrayType:
+	case *ast.TypeSpec:
+		switch s := t.Type.(type) {
+		case *ast.StructType:
+			if !t.Name.IsExported() {
+				return false
+			}
+			theStruct := Struct{
+				Name: t.Name.Name,
+			}
+			theType := Type{
+				Name: t.Name.Name,
+				// IsBasePackage=
+			}
+			for _, f := range s.Fields.List {
+				isPublic := false
+				field := Field{
+					Struct: &theStruct,
+					Names:  make([]string, 0),
+					Type: Type{
+						Name: resolveFieldTypes(f.Type, tree.Common.BasePackage.Name),
+					},
+				}
+				for _, n := range f.Names {
+					field.Names = append(field.Names, n.Name)
+					if unicode.IsUpper(rune(n.Name[0])) {
+						isPublic = true
+					}
+				}
+				field.Name = field.Names[0]
+				if isPublic {
+					theStruct.PublicFields = append(theStruct.PublicFields, field)
+				} else {
+					theStruct.PrivateFields = append(theStruct.PrivateFields, field)
+				}
+			}
+			tree.Types = append(tree.Types, theType)
+			tree.Structs = append(tree.Structs, theStruct)
+			break
+		}
+		break
+	case *ast.FuncDecl, *ast.Ident, *ast.File, *ast.Field, *ast.MapType, *ast.ImportSpec, *ast.StructType, *ast.GenDecl, *ast.ValueSpec, *ast.FieldList, *ast.ArrayType:
 		log.Printf("%#v", node)
 		return true
 	case *ast.CommentGroup, *ast.Comment, nil:

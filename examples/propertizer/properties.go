@@ -5,3 +5,23 @@ package mymodel
 
 
 
+// Getters for MyModel
+
+
+func (this *MyModel) aaa() mymodel.string {
+	return this.aaa
+}
+
+func (this *MyModel) bbb() mymodel.int {
+	return this.bbb
+}
+
+func (this *MyModel) ccc() mymodel.float64 {
+	return this.ccc
+}
+
+func (this *MyModel) ddd() struct{} {
+	return this.ddd
+}
+
+

@@ -3,13 +3,13 @@
 package {{.BasePackage.Name}}
 
 {{define "getter"}}
-func (this *{{.Model}}) {{.Name | title}}() {{.Type}} {
+func (this *{{.Struct.Name}}) {{.Name}}() {{.Type.Name}} {
 	return this.{{.Name}}
 }
 {{end}}
 
-{{range .Types}}
+{{range .Structs}}
 // Getters for {{.Name}}
 
-{{range .PrivateProperties}}{{template "getter" .}}{{end}}
+{{range .PrivateFields}}{{template "getter" .}}{{end}}
 {{end}}
