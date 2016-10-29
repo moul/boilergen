@@ -1,7 +1,34 @@
 HELLO WORLD:
 
-.:               {{ {. simple [<nil> type ..Simple struct{}] [0xc42000f0e0] package simple (".")}} [] [] [{Simple false}] [] [{{ {  [] [] <nil>}} [] Simple   [] [] [] []}]}
+.:               {[]  simple . [] [] [] [0xc420016420] [0xc42000f240]}
 
-. | json:        
+. | json:        {"Files":null,"BuildCommand":"","Name":"simple","Dir":".","Defs":[],"Imports":[],"Methods":[],"Structs":[{"Package":null,"Name":"Simple","Value":"","ValueExact":"","Types":[],"PrivateFields":[],"PublicFields":[],"PrivateMethods":[],"PublicMethods":[]}],"Types":[{"Name":"Simple","IsBasePackage":false}]}
 
-. | prettyjson:  
+. | prettyjson:  {
+  "Files": null,
+  "BuildCommand": "",
+  "Name": "simple",
+  "Dir": ".",
+  "Defs": [],
+  "Imports": [],
+  "Methods": [],
+  "Structs": [
+    {
+      "Package": null,
+      "Name": "Simple",
+      "Value": "",
+      "ValueExact": "",
+      "Types": [],
+      "PrivateFields": [],
+      "PublicFields": [],
+      "PrivateMethods": [],
+      "PublicMethods": []
+    }
+  ],
+  "Types": [
+    {
+      "Name": "Simple",
+      "IsBasePackage": false
+    }
+  ]
+}

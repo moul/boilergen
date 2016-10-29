@@ -5,6 +5,15 @@ import (
 	"go/ast"
 )
 
+type Type struct {
+	Name          string
+	IsBasePackage bool
+}
+
+func NewType() *Type {
+	return &Type{}
+}
+
 func resolveFieldTypes(t ast.Expr, pkgName string) string {
 	switch t1 := t.(type) {
 	case *ast.StructType:
