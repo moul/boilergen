@@ -9,8 +9,8 @@ import (
 
 	"github.com/kr/fs"
 	"github.com/moul/boilergen/pkg/asttree"
-	"github.com/moul/boilergen/pkg/funcmap"
 	boilerparser "github.com/moul/boilergen/pkg/parser"
+	"github.com/moul/funcmap"
 )
 
 var VERSION = "0.1.0"
